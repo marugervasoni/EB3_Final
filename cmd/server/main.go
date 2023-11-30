@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	handlerodontologos "github.com/jum8/EBE3_Final.git/cmd/server/handler/odontologo"
+	handlerodontologo "github.com/jum8/EBE3_Final.git/cmd/server/handler/odontologo"
 	"github.com/jum8/EBE3_Final.git/cmd/server/handler/ping"
 	"github.com/jum8/EBE3_Final.git/internal/odontologo"
 )
@@ -37,7 +37,7 @@ func main() {
 
 	repositoryOdontologo := odontologo.NewRepositoryOdontologo(db)
 	serviceOdontologo := odontologo.NewServiceOdontologo(repositoryOdontologo)
-	controllerOdontologo := handlerodontologos.NewControllerOdontologo(serviceOdontologo)
+	controllerOdontologo := handlerodontologo.NewControllerOdontologo(serviceOdontologo)
 
 	engine := gin.Default()
 

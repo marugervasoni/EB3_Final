@@ -1,4 +1,4 @@
-package handlerodontologos
+package odontologo
 
 import (
 	"errors"
