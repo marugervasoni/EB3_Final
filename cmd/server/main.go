@@ -5,15 +5,16 @@ import (
 	"fmt"
 	"log"
 	"os"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	handlerodontologos "github.com/jum8/EBE3_Final.git/cmd/server/handler/odontologo"
 	handlerpaciente "github.com/jum8/EBE3_Final.git/cmd/server/handler/paciente"
+	handlerturno "github.com/jum8/EBE3_Final.git/cmd/server/handler/turno"
 	"github.com/jum8/EBE3_Final.git/cmd/server/handler/ping"
 	"github.com/jum8/EBE3_Final.git/internal/odontologo"
 	"github.com/jum8/EBE3_Final.git/internal/paciente"
+	"github.com/jum8/EBE3_Final.git/internal/turno"
 )
 
 const (
@@ -45,6 +46,10 @@ func main() {
 	servicePaciente := paciente.NewServicePaciente(repositoryPaciente)
 	controllerPaciente := handlerpaciente.NewPacienteHandler(servicePaciente)	
 
+	repositoryTurno := turno.NewRepositoryTurno(db)
+	serviceTurno := turno.NewServiceTurno(repositoryTurno, repositoryOdontologo, repositoryPaciente)
+	controllerTurno := handlerturno.NewTurnoHandler(serviceTurno)	
+
 	engine := gin.Default()
 
 	baseGroup := engine.Group("/api/v1")
@@ -69,6 +74,13 @@ func main() {
         pacienteGroup.PUT(":id", controllerPaciente.HandlerUpdate())
         pacienteGroup.DELETE(":id", controllerPaciente.HandlerDelete())
         pacienteGroup.PATCH(":id", controllerPaciente.HandlerPatch())
+    }
+
+	turnoGroup := baseGroup.Group("/turnos")
+    {
+		turnoGroup.POST("", controllerTurno.HandlerCreate())
+        turnoGroup.GET(":id", controllerTurno.HandlerGetById())
+        turnoGroup.PUT(":id", controllerTurno.HandlerUpdate())
     }
 
 	if err := engine.Run(fmt.Sprintf(":%s", puerto)); err != nil {
