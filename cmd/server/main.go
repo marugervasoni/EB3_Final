@@ -9,9 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	handlerodontologo "github.com/jum8/EBE3_Final.git/cmd/server/handler/odontologo"
+	handlerodontologos "github.com/jum8/EBE3_Final.git/cmd/server/handler/odontologo"
+	handlerpaciente "github.com/jum8/EBE3_Final.git/cmd/server/handler/paciente"
 	"github.com/jum8/EBE3_Final.git/cmd/server/handler/ping"
 	"github.com/jum8/EBE3_Final.git/internal/odontologo"
+	"github.com/jum8/EBE3_Final.git/internal/paciente"
 )
 
 const (
@@ -37,7 +39,11 @@ func main() {
 
 	repositoryOdontologo := odontologo.NewRepositoryOdontologo(db)
 	serviceOdontologo := odontologo.NewServiceOdontologo(repositoryOdontologo)
-	controllerOdontologo := handlerodontologo.NewControllerOdontologo(serviceOdontologo)
+	controllerOdontologo := handlerodontologos.NewControllerOdontologo(serviceOdontologo)
+
+	repositoryPaciente := paciente.NewRepositoryPaciente(db)
+	servicePaciente := paciente.NewServicePaciente(repositoryPaciente)
+	controllerPaciente := handlerpaciente.NewPacienteHandler(servicePaciente)	
 
 	engine := gin.Default()
 
@@ -54,6 +60,16 @@ func main() {
 		odontologoGroup.DELETE(":id", controllerOdontologo.HandlerDelete())
 		odontologoGroup.PATCH(":id", controllerOdontologo.HandlerPatch())
 	}
+
+	pacienteGroup := baseGroup.Group("/pacientes")
+    {
+        pacienteGroup.GET("", controllerPaciente.HandlerGetAll())
+        pacienteGroup.GET(":id", controllerPaciente.HandlerGetById())
+        pacienteGroup.POST("", controllerPaciente.HandlerCreate())
+        pacienteGroup.PUT(":id", controllerPaciente.HandlerUpdate())
+        pacienteGroup.DELETE(":id", controllerPaciente.HandlerDelete())
+        pacienteGroup.PATCH(":id", controllerPaciente.HandlerPatch())
+    }
 
 	if err := engine.Run(fmt.Sprintf(":%s", puerto)); err != nil {
 		panic(err)
