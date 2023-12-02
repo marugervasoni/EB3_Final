@@ -27,6 +27,17 @@ func (h *TurnoHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.PUT("/turno/:id", h.HandlerUpdate())
 }
 
+
+// Producto godoc
+// @Summary Turnos
+// @Description Create a new turno
+// @Tags Turno
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos [post]
 func (h *TurnoHandler) HandlerCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var turno domain.Turno
@@ -44,6 +55,17 @@ func (h *TurnoHandler) HandlerCreate() gin.HandlerFunc {
 	}
 }
 
+// Producto godoc
+// @Summary Turnos
+// @Description Get turno by id
+// @Tags turno
+// @Param id path int true "id del turno"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [get]
 func (h *TurnoHandler) HandlerGetById() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -61,6 +83,16 @@ func (h *TurnoHandler) HandlerGetById() gin.HandlerFunc {
 	}
 }
 
+// Producto godoc
+// @Summary Turnos
+// @Description Update turno by id
+// @Tags turno
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [put]
 func (h *TurnoHandler) HandlerUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
