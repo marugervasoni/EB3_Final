@@ -11,7 +11,7 @@ type Repository interface {
 	Update(ctx context.Context, id int, turno domain.Turno) (*domain.Turno, error)
 	Patch(ctx context.Context, turno domain.Turno, id int) (*domain.Turno, error)
 	Delete(ctx context.Context, id int) error
-	GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error)
+	GetByDNI(ctx context.Context, dni int) ([]domain.TurnoFull, error)
 }
 
 type Service interface {
@@ -20,5 +20,5 @@ type Service interface {
 	Update(ctx context.Context, id int, turno domain.Turno) (*domain.Turno, error)
 	Patch(ctx context.Context, turno domain.Turno, id int) (*domain.Turno, error)
 	Delete(ctx context.Context, id int) error
-	GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error)
+	GetByDNI(ctx context.Context, dni int) ([]domain.TurnoFull, error)
 }

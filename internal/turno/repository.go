@@ -141,34 +141,49 @@ func (r *repository) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-func (r *repository) GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error) {
+func (r *repository) GetByDNI(ctx context.Context, dni int) ([]domain.TurnoFull, error) {
 	rows, err := r.db.Query(QueryGetTurnosByPacienteDNI, dni)
 	if err != nil {
-		return []domain.Turno{}, err
+		return []domain.TurnoFull{}, err
 	}
 
 	defer rows.Close()
 
 
-	var turnos []domain.Turno
+	var turnos []domain.TurnoFull
 
 	for rows.Next() {
-		var turno domain.Turno
+		var turno domain.TurnoFull
+		var odontologo domain.Odontologo
+		var paciente domain.Paciente
+
 		err := rows.Scan(
 			&turno.Id,
 			&turno.FechaHora,
 			&turno.Descripcion,
-			&turno.OdontologoId,
-			&turno.PacienteId,
+			&odontologo.Id,
+			&odontologo.Nombre,
+			&odontologo.Apellido,
+			&odontologo.Matricula,
+			&paciente.Id,
+			&paciente.Nombre,
+			&paciente.Apellido,
+			&paciente.Domicilio,
+			&paciente.DNI,
+			&paciente.FechaDeAlta,
 		)
 		if err != nil {
-			return []domain.Turno{}, err
+			return []domain.TurnoFull{}, err
 		}
+
+		turno.Odontologo = odontologo
+		turno.Paciente = paciente
+
 		turnos = append(turnos, turno)
 	}
 
 	if err := rows.Err(); err != nil {
-		return []domain.Turno{}, err
+		return []domain.TurnoFull{}, err
 	}
 
 	return turnos, nil

@@ -144,11 +144,11 @@ func (s *service) Delete(ctx context.Context, id int) error {
 }
 
 //GetByDNI
-func (s *service) GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error) {
+func (s *service) GetByDNI(ctx context.Context, dni int) ([]domain.TurnoFull, error) {
 	turnos, err := s.repository.GetByDNI(ctx, dni)
 	if err != nil {
 		log.Println("[TurnoService][GetByDNI] error getting turnos by dni", err)
-		return []domain.Turno{}, err
+		return []domain.TurnoFull{}, err
 	}
 	return turnos, nil
 }
@@ -201,4 +201,17 @@ func (s *service) validatePatch(turnoToStore, turno domain.Turno) (domain.Turno,
 
 	return turnoToStore, nil
 
+}
+
+func (s	*service) mapTurnoToTurnoFull(
+	turno domain.Turno, odontologo domain.Odontologo, paciente domain.Paciente) (domain.TurnoFull)  {
+	var turnoFull domain.TurnoFull
+
+	turnoFull.Id = turno.Id
+	turnoFull.FechaHora = turno.FechaHora
+	turnoFull.Descripcion = turno.Descripcion
+	turnoFull.Odontologo = odontologo
+	turnoFull.Paciente = paciente
+
+	return turnoFull
 }
