@@ -78,9 +78,10 @@ func main() {
 
 	turnoGroup := baseGroup.Group("/turnos")
     {
-		turnoGroup.POST("", controllerTurno.HandlerCreate())
-        turnoGroup.GET(":id", controllerTurno.HandlerGetById())
-        turnoGroup.PUT(":id", controllerTurno.HandlerUpdate())
+			turnoGroup.POST("", controllerTurno.HandlerCreate())
+			turnoGroup.GET(":id", controllerTurno.HandlerGetById())
+			turnoGroup.PUT(":id", controllerTurno.HandlerUpdate())
+			turnoGroup.PATCH(":id", controllerTurno.HandlerPatch())
     }
 
 	if err := engine.Run(fmt.Sprintf(":%s", puerto)); err != nil {

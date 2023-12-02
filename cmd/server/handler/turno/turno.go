@@ -81,3 +81,31 @@ func (h *TurnoHandler) HandlerUpdate() gin.HandlerFunc {
 		web.Success(c, http.StatusOK, gin.H{"data": updatedTurno})
 	}
 }
+
+func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			return
+		}
+
+		var tunoReq domain.Turno
+
+		err = ctx.ShouldBindJSON(&tunoReq)
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request binding")
+			return
+		}
+
+		tunoPatched, err := h.Service.Patch(ctx, tunoReq, id)
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		web.Success(ctx, http.StatusOK, gin.H{
+			"data": tunoPatched,
+		})
+	}
+}

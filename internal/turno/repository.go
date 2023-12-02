@@ -97,3 +97,35 @@ func (r *repository) Update(ctx context.Context, id int, turno domain.Turno) (*d
 
 	return &turno, nil
 }
+
+//Patch
+
+func (r *repository) Patch(ctx context.Context,	turno domain.Turno,	id int) (*domain.Turno, error) {
+	statement, err := r.db.Prepare(QueryUpdateTurno)
+	if err != nil {
+		return nil, ErrPrepareStatement
+	}
+
+	defer statement.Close()
+
+	result, err := statement.Exec(turno.FechaHora, turno.Descripcion, turno.OdontologoId, turno.PacienteId, id)
+
+	if err != nil {
+		return nil, ErrExecStatement
+	}
+
+	_, err = result.RowsAffected()
+	if err != nil {
+		return nil, err
+	}
+
+	return &turno, nil
+}
+
+func (r *repository) Delete(ctx context.Context, id int) error {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *repository) GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error) {
+	panic("not implemented") // TODO: Implement
+}

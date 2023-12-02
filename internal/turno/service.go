@@ -3,7 +3,9 @@ package turno
 import (
 	"context"
 	"errors"
+	"log"
 	"time"
+
 	"github.com/jum8/EBE3_Final.git/internal/domain"
 	Odontologo "github.com/jum8/EBE3_Final.git/internal/odontologo"
 	Paciente "github.com/jum8/EBE3_Final.git/internal/paciente"
@@ -108,6 +110,39 @@ func (s *service) Update(ctx context.Context, id int, turno domain.Turno) (*doma
 	return turnoUpdated, nil
 }
 
+//Patch
+func (s *service) Patch(ctx context.Context, turno domain.Turno, id int) (*domain.Turno, error) {
+	turnoStored, err := s.repository.GetById(ctx, id)
+	if err != nil {
+		log.Println("[TurnoService][Patch] error getting turno by ID", err)
+		return nil, err
+	}
+
+	turnoToPatch, err := s.validatePatch(*turnoStored, turno)
+	if err != nil {
+		log.Println("[TurnoService][Patch] error validating turno", err)
+		return nil, err
+	}
+
+	turnoPatched, err := s.repository.Patch(ctx, turnoToPatch, id)
+	if err != nil {
+		log.Println("[TurnoService][Patch] error patching turno by ID", err)
+		return nil, err
+	}
+
+	return turnoPatched, nil
+}
+
+//Delete
+func (s *service) Delete(ctx context.Context, id int) error {
+	panic("not implemented") // TODO: Implement
+}
+
+//GetByDNI
+func (s *service) GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error) {
+	panic("not implemented") // TODO: Implement
+}
+
 
 // validations:
 func (s *service) validateTurnoAttributes(turnoUpdate domain.Turno) error {
@@ -134,4 +169,26 @@ func (s *service) validatePaciente(ctx context.Context, pacienteId int) error {
 	}
 
 	return nil
+}
+
+func (s *service) validatePatch(turnoToStore, turno domain.Turno) (domain.Turno, error) {
+
+	if !turno.FechaHora.Equal(time.Time{}) {
+		turnoToStore.FechaHora = turno.FechaHora
+	}
+
+	if turno.Descripcion != "" {
+		turnoToStore.Descripcion = turno.Descripcion
+	}
+
+	if turno.OdontologoId != 0 {
+		turnoToStore.OdontologoId = turno.OdontologoId
+	}
+
+	if turno.PacienteId != 0 {
+		turnoToStore.PacienteId = turno.PacienteId
+	}
+
+	return turnoToStore, nil
+
 }
