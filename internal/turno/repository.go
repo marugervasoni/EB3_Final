@@ -142,5 +142,35 @@ func (r *repository) Delete(ctx context.Context, id int) error {
 }
 
 func (r *repository) GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error) {
-	panic("not implemented") // TODO: Implement
+	rows, err := r.db.Query(QueryGetTurnosByPacienteDNI, dni)
+	if err != nil {
+		return []domain.Turno{}, err
+	}
+
+	defer rows.Close()
+
+
+	var turnos []domain.Turno
+
+	for rows.Next() {
+		var turno domain.Turno
+		err := rows.Scan(
+			&turno.Id,
+			&turno.FechaHora,
+			&turno.Descripcion,
+			&turno.OdontologoId,
+			&turno.PacienteId,
+		)
+		if err != nil {
+			return []domain.Turno{}, err
+		}
+		turnos = append(turnos, turno)
+	}
+
+	if err := rows.Err(); err != nil {
+		return []domain.Turno{}, err
+	}
+
+	return turnos, nil
+
 }

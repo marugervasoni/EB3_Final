@@ -145,7 +145,12 @@ func (s *service) Delete(ctx context.Context, id int) error {
 
 //GetByDNI
 func (s *service) GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error) {
-	panic("not implemented") // TODO: Implement
+	turnos, err := s.repository.GetByDNI(ctx, dni)
+	if err != nil {
+		log.Println("[TurnoService][GetByDNI] error getting turnos by dni", err)
+		return []domain.Turno{}, err
+	}
+	return turnos, nil
 }
 
 

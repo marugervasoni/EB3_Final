@@ -83,6 +83,7 @@ func main() {
 			turnoGroup.PUT(":id", controllerTurno.HandlerUpdate())
 			turnoGroup.PATCH(":id", controllerTurno.HandlerPatch())
 			turnoGroup.DELETE(":id", controllerTurno.HandleDelete())
+			turnoGroup.GET("", controllerTurno.HandlerGetByDNI())
     }
 
 	if err := engine.Run(fmt.Sprintf(":%s", puerto)); err != nil {

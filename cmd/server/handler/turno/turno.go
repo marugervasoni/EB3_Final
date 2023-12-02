@@ -130,6 +130,22 @@ func (h *TurnoHandler) HandleDelete() gin.HandlerFunc {
 		ctx.JSON(http.StatusOK, gin.H{
 			"message":fmt.Sprintf("turno con id %d eliminado", id),
 		})
+	}	
+}
+
+func (h *TurnoHandler) HandlerGetByDNI() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		dni, err := strconv.Atoi(ctx.Query("dni"))
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "Invalid dni")
+			return
+		}
+
+		turnos, err := h.Service.GetByDNI(ctx, dni)
+		if err != nil {
+			web.Error(ctx, http.StatusNotFound, err.Error())
+			return
+		}
+		web.Success(ctx, http.StatusOK, gin.H{"data": turnos})
 	}
-	
 }
