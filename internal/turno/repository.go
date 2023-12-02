@@ -97,3 +97,80 @@ func (r *repository) Update(ctx context.Context, id int, turno domain.Turno) (*d
 
 	return &turno, nil
 }
+
+//Patch
+
+func (r *repository) Patch(ctx context.Context,	turno domain.Turno,	id int) (*domain.Turno, error) {
+	statement, err := r.db.Prepare(QueryUpdateTurno)
+	if err != nil {
+		return nil, ErrPrepareStatement
+	}
+
+	defer statement.Close()
+
+	result, err := statement.Exec(turno.FechaHora, turno.Descripcion, turno.OdontologoId, turno.PacienteId, id)
+
+	if err != nil {
+		return nil, ErrExecStatement
+	}
+
+	_, err = result.RowsAffected()
+	if err != nil {
+		return nil, err
+	}
+
+	return &turno, nil
+}
+
+//Delete
+func (r *repository) Delete(ctx context.Context, id int) error {
+	result, err := r.db.Exec(QueryDeleteTurno, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected < 1 {
+		return ErrNotFound
+	}
+
+	return nil
+}
+
+func (r *repository) GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error) {
+	rows, err := r.db.Query(QueryGetTurnosByPacienteDNI, dni)
+	if err != nil {
+		return []domain.Turno{}, err
+	}
+
+	defer rows.Close()
+
+
+	var turnos []domain.Turno
+
+	for rows.Next() {
+		var turno domain.Turno
+		err := rows.Scan(
+			&turno.Id,
+			&turno.FechaHora,
+			&turno.Descripcion,
+			&turno.OdontologoId,
+			&turno.PacienteId,
+		)
+		if err != nil {
+			return []domain.Turno{}, err
+		}
+		turnos = append(turnos, turno)
+	}
+
+	if err := rows.Err(); err != nil {
+		return []domain.Turno{}, err
+	}
+
+	return turnos, nil
+
+}
