@@ -135,7 +135,12 @@ func (s *service) Patch(ctx context.Context, turno domain.Turno, id int) (*domai
 
 //Delete
 func (s *service) Delete(ctx context.Context, id int) error {
-	panic("not implemented") // TODO: Implement
+	err := s.repository.Delete(ctx, id)
+	if err != nil {
+		log.Println("[TurnoService][Delete] error deleting turno", err)
+		return err
+	}
+	return nil
 }
 
 //GetByDNI

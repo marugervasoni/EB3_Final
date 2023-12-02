@@ -122,8 +122,23 @@ func (r *repository) Patch(ctx context.Context,	turno domain.Turno,	id int) (*do
 	return &turno, nil
 }
 
+//Delete
 func (r *repository) Delete(ctx context.Context, id int) error {
-	panic("not implemented") // TODO: Implement
+	result, err := r.db.Exec(QueryDeleteTurno, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected < 1 {
+		return ErrNotFound
+	}
+
+	return nil
 }
 
 func (r *repository) GetByDNI(ctx context.Context, dni int) ([]domain.Turno, error) {

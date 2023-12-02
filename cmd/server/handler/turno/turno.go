@@ -1,8 +1,10 @@
 package turno
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jum8/EBE3_Final.git/internal/domain"
 	"github.com/jum8/EBE3_Final.git/internal/turno"
@@ -108,4 +110,26 @@ func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
 			"data": tunoPatched,
 		})
 	}
+}
+
+func (h *TurnoHandler) HandleDelete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			return
+		}
+
+		err = h.Service.Delete(ctx, id)
+
+		if err != nil {
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"message":fmt.Sprintf("turno con id %d eliminado", id),
+		})
+	}
+	
 }
