@@ -202,16 +202,3 @@ func (s *service) validatePatch(turnoToStore, turno domain.Turno) (domain.Turno,
 	return turnoToStore, nil
 
 }
-
-func (s	*service) mapTurnoToTurnoFull(
-	turno domain.Turno, odontologo domain.Odontologo, paciente domain.Paciente) (domain.TurnoFull)  {
-	var turnoFull domain.TurnoFull
-
-	turnoFull.Id = turno.Id
-	turnoFull.FechaHora = turno.FechaHora
-	turnoFull.Descripcion = turno.Descripcion
-	turnoFull.Odontologo = odontologo
-	turnoFull.Paciente = paciente
-
-	return turnoFull
-}
