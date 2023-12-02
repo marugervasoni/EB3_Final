@@ -15,12 +15,33 @@ import (
 	"github.com/jum8/EBE3_Final.git/internal/odontologo"
 	"github.com/jum8/EBE3_Final.git/internal/paciente"
 	"github.com/jum8/EBE3_Final.git/internal/turno"
+	// swaggerFiles "github.com/swaggo/files"
+	// ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 const (
 	puerto = "8080"
 )
 
+// @title           EBE3- FINAL: API CLINICA
+// @version         1.0
+// @description     This is a sample server celler server.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.swagger.io/support
+// @contact.email  support@swagger.io
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @securityDefinitions.basic  BasicAuth
+
+// @externalDocs.description  OpenAPI
+// @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	defer func() {
 		if err := recover(); err != nil {
@@ -35,6 +56,16 @@ func main() {
 	}
 
 	db := connectDB()
+
+	// Create a new Gin engine.
+	// router := gin.New()
+	// router.Use(gin.Recovery())
+	// // Add the logger middleware.
+	// router.Use(middleware.Logger()) 
+ 
+	// // Add the swagger handler.
+	// router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 
 	controllerPing := ping.NewControllerPing()
 
