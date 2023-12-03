@@ -116,6 +116,18 @@ func (h *TurnoHandler) HandlerUpdate() gin.HandlerFunc {
 	}
 }
 
+// Turno godoc
+// @Summary Patch turno
+// @Description Actualiza un turno enviando solo los campos a actualizar
+// @Tags turno
+// @Param id path int true "id del turno"
+// @Param token header string true "auth token"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [patch]
 func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -138,12 +150,22 @@ func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, gin.H{
-			"data": tunoPatched,
-		})
+		web.Success(ctx, http.StatusOK, tunoPatched)
 	}
 }
 
+// Turno godoc
+// @Summary Delete turno by id
+// @Description Borra el turno con el id enviado por parametro
+// @Tags turno
+// @Param id path int true "id del turno"
+// @Param token header string true "auth token"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos/:id [delete]
 func (h *TurnoHandler) HandleDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -159,12 +181,22 @@ func (h *TurnoHandler) HandleDelete() gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{
-			"message":fmt.Sprintf("turno con id %d eliminado", id),
-		})
+		web.Success(ctx, http.StatusOK, fmt.Sprintf("turno con id %d eliminado", id))
+		
 	}	
 }
 
+// Turno godoc
+// @Summary Obtener turnos por dni
+// @Description Obtiene todos los turnos de un paciente identificado por su dni
+// @Tags turno
+// @Param dni query int true "dni del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /turnos [get]
 func (h *TurnoHandler) HandlerGetByDNI() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		dni, err := strconv.Atoi(ctx.Query("dni"))
@@ -178,6 +210,6 @@ func (h *TurnoHandler) HandlerGetByDNI() gin.HandlerFunc {
 			web.Error(ctx, http.StatusNotFound, err.Error())
 			return
 		}
-		web.Success(ctx, http.StatusOK, gin.H{"data": turnos})
+		web.Success(ctx, http.StatusOK, turnos)
 	}
 }

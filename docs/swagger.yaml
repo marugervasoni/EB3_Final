@@ -219,6 +219,34 @@ paths:
       tags:
       - odontologo
   /turnos:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene todos los turnos de un paciente identificado por su dni
+      parameters:
+      - description: dni del paciente
+        in: query
+        name: dni
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Obtener turnos por dni
+      tags:
+      - turno
     post:
       consumes:
       - application/json
@@ -242,6 +270,39 @@ paths:
       tags:
       - Turno
   /turnos/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Borra el turno con el id enviado por parametro
+      parameters:
+      - description: id del turno
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Delete turno by id
+      tags:
+      - turno
     get:
       consumes:
       - application/json
@@ -268,6 +329,39 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       summary: Turnos
+      tags:
+      - turno
+    patch:
+      consumes:
+      - application/json
+      description: Actualiza un turno enviando solo los campos a actualizar
+      parameters:
+      - description: id del turno
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Patch turno
       tags:
       - turno
     put:
