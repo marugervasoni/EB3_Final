@@ -150,9 +150,7 @@ func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, gin.H{
-			"data": tunoPatched,
-		})
+		web.Success(ctx, http.StatusOK, tunoPatched)
 	}
 }
 
@@ -183,9 +181,8 @@ func (h *TurnoHandler) HandleDelete() gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{
-			"message":fmt.Sprintf("turno con id %d eliminado", id),
-		})
+		web.Success(ctx, http.StatusOK, fmt.Sprintf("turno con id %d eliminado", id))
+		
 	}	
 }
 
@@ -213,6 +210,6 @@ func (h *TurnoHandler) HandlerGetByDNI() gin.HandlerFunc {
 			web.Error(ctx, http.StatusNotFound, err.Error())
 			return
 		}
-		web.Success(ctx, http.StatusOK, gin.H{"data": turnos})
+		web.Success(ctx, http.StatusOK, turnos)
 	}
 }
