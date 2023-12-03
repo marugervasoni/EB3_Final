@@ -22,6 +22,15 @@ func NewControllerOdontologo(service odontologo.Repository) *Controller {
 	}
 }
 
+// Odontologo godoc
+// @Summary Get all odontologos
+// @Description Get all odontologos
+// @Tags odontologo
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos [get]
 func (c *Controller) HandlerGetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		odontologos, err := c.service.GetAll(ctx)
@@ -30,17 +39,26 @@ func (c *Controller) HandlerGetAll() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, gin.H{
-			"data": odontologos,
-		})
+		web.Success(ctx, http.StatusOK, odontologos)
 	}
 }
 
+// Odontologo godoc
+// @Summary Get odontologo by id
+// @Description Get odontologo by id
+// @Tags odontologo
+// @Param id path int true "id del odontologo"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/:id [get]
 func (c *Controller) HandlerGetById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			web.Error(ctx, http.StatusBadRequest, "%s", "Invalid ID")
 			return
 		}
 
@@ -50,12 +68,22 @@ func (c *Controller) HandlerGetById() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, gin.H{
-			"data": odontologoById,
-		})
+		web.Success(ctx, http.StatusOK, odontologoById)
 	}
 }
 
+// Odontologo godoc
+// @Summary Create a new odontologo
+// @Description Create a new odontologo
+// @Tags odontologo
+// @Param token header string true "auth token"
+// @Accept json
+// @Produce json
+// @Success 201 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 404 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologo [post]
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var odontologoReq domain.Odontologo
@@ -72,17 +100,28 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusCreated, gin.H{
-			"data": odontologoCreated,
-		})
+		web.Success(ctx, http.StatusCreated, odontologoCreated)
 	}
 }
 
+// Odontologo godoc
+// @Summary Complete odontologo update by id
+// @Description Update all odontologo fields by id
+// @Tags odontologo
+// @Param token header string true "auth token"
+// @Param id path int true "id del odontologo"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 404 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/:id [put]
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			web.Error(ctx, http.StatusBadRequest, "%s", "Invalid ID")
 			return
 		}
 
@@ -100,17 +139,27 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, gin.H{
-			"data": odontologoUpdated,
-		})
+		web.Success(ctx, http.StatusOK, odontologoUpdated)
 	}
 }
 
+// Odontologo godoc
+// @Summary Delete odontologo by id
+// @Description Delete odontologo by id
+// @Tags odontologo
+// @Param token header string true "auth token"
+// @Param id path int true "id del odontologo"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 404 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/:id [delete]
 func (c *Controller) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			web.Error(ctx, http.StatusBadRequest, "%s", "Invalid ID")
 			return
 		}
 
@@ -120,17 +169,28 @@ func (c *Controller) HandlerDelete() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, gin.H{
-			"message": fmt.Sprintf("odontologo con id %d eliminado", id),
-		})
+		web.Success(ctx, http.StatusOK, fmt.Sprintf("odontologo con id %d eliminado", id))
 	}
 }
 
+// Odontologo godoc
+// @Summary Complete or partial odontologo update by id
+// @Description Update all or some odontologo fields by id
+// @Tags odontologo
+// @Param token header string true "auth token"
+// @Param id path int true "id del odontologo"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 404 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologos/:id [patch]
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			web.Error(ctx, http.StatusBadRequest, "%s", "Invalid ID")
 			return
 		}
 
@@ -148,9 +208,7 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, gin.H{
-			"data": odontologoPatched,
-		})
+		web.Success(ctx, http.StatusOK, odontologoPatched)
 	}
 }
 

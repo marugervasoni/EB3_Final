@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type response struct {
+	Data interface{} `json:"data"`
+}
+
 type errorResponse struct {
 	Status  int    `json:"status"`
 	Code    string `json:"code"`
@@ -18,8 +22,8 @@ func Response(c *gin.Context, status int, data any) {
 	c.JSON(status, data)
 }
 
-func Success(c *gin.Context, status int, body any) {
-	Response(c, status, body)
+func Success(c *gin.Context, status int, data any) {
+	Response(c, status, response{Data: data})
 }
 
 // Error creates a new error with the given status code and the message

@@ -5,18 +5,21 @@ import (
 	"fmt"
 	"log"
 	"os"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	handlerodontologos "github.com/jum8/EBE3_Final.git/cmd/server/handler/odontologo"
 	handlerpaciente "github.com/jum8/EBE3_Final.git/cmd/server/handler/paciente"
-	handlerturno "github.com/jum8/EBE3_Final.git/cmd/server/handler/turno"
 	"github.com/jum8/EBE3_Final.git/cmd/server/handler/ping"
+	handlerturno "github.com/jum8/EBE3_Final.git/cmd/server/handler/turno"
 	"github.com/jum8/EBE3_Final.git/internal/odontologo"
 	"github.com/jum8/EBE3_Final.git/internal/paciente"
 	"github.com/jum8/EBE3_Final.git/internal/turno"
-	// swaggerFiles "github.com/swaggo/files"
-	// ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/jum8/EBE3_Final.git/pkg/middleware"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "github.com/jum8/EBE3_Final.git/docs"
 )
 
 const (
@@ -25,7 +28,7 @@ const (
 
 // @title           EBE3- FINAL: API CLINICA
 // @version         1.0
-// @description     This is a sample server celler server.
+// @description     This is an API for a clinic.
 // @termsOfService  http://swagger.io/terms/
 
 // @contact.name   API Support
@@ -37,8 +40,6 @@ const (
 
 // @host      localhost:8080
 // @BasePath  /api/v1
-
-// @securityDefinitions.basic  BasicAuth
 
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/
@@ -56,16 +57,6 @@ func main() {
 	}
 
 	db := connectDB()
-
-	// Create a new Gin engine.
-	// router := gin.New()
-	// router.Use(gin.Recovery())
-	// // Add the logger middleware.
-	// router.Use(middleware.Logger()) 
- 
-	// // Add the swagger handler.
-	// router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 
 	controllerPing := ping.NewControllerPing()
 
@@ -87,14 +78,16 @@ func main() {
 
 	baseGroup.GET("/ping", controllerPing.HandlerPing())
 
+	baseGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	odontologoGroup := baseGroup.Group("/odontologos")
 	{
 		odontologoGroup.GET("", controllerOdontologo.HandlerGetAll())
 		odontologoGroup.GET(":id", controllerOdontologo.HandlerGetById())
-		odontologoGroup.POST("", controllerOdontologo.HandlerCreate())
-		odontologoGroup.PUT(":id", controllerOdontologo.HandlerUpdate())
-		odontologoGroup.DELETE(":id", controllerOdontologo.HandlerDelete())
-		odontologoGroup.PATCH(":id", controllerOdontologo.HandlerPatch())
+		odontologoGroup.POST("", middleware.Authenticate(), controllerOdontologo.HandlerCreate())
+		odontologoGroup.PUT(":id", middleware.Authenticate(), controllerOdontologo.HandlerUpdate())
+		odontologoGroup.DELETE(":id", middleware.Authenticate(), controllerOdontologo.HandlerDelete())
+		odontologoGroup.PATCH(":id", middleware.Authenticate(), controllerOdontologo.HandlerPatch())
 	}
 
 	pacienteGroup := baseGroup.Group("/pacientes")
