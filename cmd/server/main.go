@@ -94,19 +94,19 @@ func main() {
     {
         pacienteGroup.GET("", controllerPaciente.HandlerGetAll())
         pacienteGroup.GET(":id", controllerPaciente.HandlerGetById())
-        pacienteGroup.POST("", controllerPaciente.HandlerCreate())
-        pacienteGroup.PUT(":id", controllerPaciente.HandlerUpdate())
-        pacienteGroup.DELETE(":id", controllerPaciente.HandlerDelete())
-        pacienteGroup.PATCH(":id", controllerPaciente.HandlerPatch())
+        pacienteGroup.POST("", middleware.Authenticate(), controllerPaciente.HandlerCreate())
+        pacienteGroup.PUT(":id", middleware.Authenticate(), controllerPaciente.HandlerUpdate())
+        pacienteGroup.DELETE(":id", middleware.Authenticate(),  controllerPaciente.HandlerDelete())
+        pacienteGroup.PATCH(":id", middleware.Authenticate(),  controllerPaciente.HandlerPatch())
     }
 
 	turnoGroup := baseGroup.Group("/turnos")
     {
-			turnoGroup.POST("", controllerTurno.HandlerCreate())
+			turnoGroup.POST("", middleware.Authenticate(),  controllerTurno.HandlerCreate())
 			turnoGroup.GET(":id", controllerTurno.HandlerGetById())
-			turnoGroup.PUT(":id", controllerTurno.HandlerUpdate())
-			turnoGroup.PATCH(":id", controllerTurno.HandlerPatch())
-			turnoGroup.DELETE(":id", controllerTurno.HandleDelete())
+			turnoGroup.PUT(":id", middleware.Authenticate(),  controllerTurno.HandlerUpdate())
+			turnoGroup.PATCH(":id", middleware.Authenticate(),  controllerTurno.HandlerPatch())
+			turnoGroup.DELETE(":id", middleware.Authenticate(),  controllerTurno.HandleDelete())
 			turnoGroup.GET("", controllerTurno.HandlerGetByDNI())
     }
 

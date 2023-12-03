@@ -31,7 +31,7 @@ func (h *TurnoHandler) RegisterRoutes(router *gin.RouterGroup) {
 // Producto godoc
 // @Summary Turnos
 // @Description Create a new turno
-// @Tags Turno
+// @Tags turno
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response

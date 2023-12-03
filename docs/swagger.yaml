@@ -218,6 +218,198 @@ paths:
       summary: Complete odontologo update by id
       tags:
       - odontologo
+  /paciente:
+    post:
+      consumes:
+      - application/json
+      description: Create a new paciente
+      parameters:
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Create a new paciente
+      tags:
+      - Paciente
+  /pacientes:
+    get:
+      consumes:
+      - application/json
+      description: get all pacientes
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Paciente
+      tags:
+      - Paciente
+  /pacientes/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete paciente by id
+      parameters:
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: id del paciente
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Delete paciente by id
+      tags:
+      - Paciente
+    get:
+      consumes:
+      - application/json
+      description: Get paciente by id
+      parameters:
+      - description: id del paciente
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Get paciente by id
+      tags:
+      - Paciente
+    patch:
+      consumes:
+      - application/json
+      description: Update all or some paciente fields by id
+      parameters:
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: id del paciente
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Complete or partial paciente update by id
+      tags:
+      - Paciente
+    put:
+      consumes:
+      - application/json
+      description: Update all paciente fields by id
+      parameters:
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: id del paciente
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Complete paciente update by id
+      tags:
+      - Paciente
   /turnos:
     get:
       consumes:
@@ -268,7 +460,7 @@ paths:
             $ref: '#/definitions/web.errorResponse'
       summary: Turnos
       tags:
-      - Turno
+      - turno
   /turnos/:id:
     delete:
       consumes:

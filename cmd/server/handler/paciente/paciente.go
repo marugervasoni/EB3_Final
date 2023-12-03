@@ -20,6 +20,8 @@ func NewPacienteHandler(service paciente.Service) *PacienteHandler {
 	}
 }
 
+
+
 func (h *PacienteHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.GET("/pacientes", h.HandlerGetAll())
 	router.GET("/paciente/:id", h.HandlerGetById())
@@ -30,6 +32,17 @@ func (h *PacienteHandler) RegisterRoutes(router *gin.RouterGroup) {
 }
 
 
+
+// Paciente godoc
+// @Summary Paciente
+// @Description get all pacientes
+// @Tags Paciente
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes [get]
 func (h *PacienteHandler) HandlerGetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		pacientes, err := h.Service.GetAll(c)
@@ -41,6 +54,18 @@ func (h *PacienteHandler) HandlerGetAll() gin.HandlerFunc {
 	}
 }
 
+
+// Paciente godoc
+// @Summary Get paciente by id
+// @Description Get paciente by id
+// @Tags Paciente
+// @Param id path int true "id del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [get]
 func (h *PacienteHandler) HandlerGetById() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -58,6 +83,19 @@ func (h *PacienteHandler) HandlerGetById() gin.HandlerFunc {
 	}
 }
 
+
+// Paciente godoc
+// @Summary Create a new paciente
+// @Description Create a new paciente
+// @Tags Paciente
+// @Param token header string true "auth token"
+// @Accept json
+// @Produce json
+// @Success 201 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 404 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /paciente [post]
 func (h *PacienteHandler) HandlerCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var paciente domain.Paciente
@@ -75,6 +113,20 @@ func (h *PacienteHandler) HandlerCreate() gin.HandlerFunc {
 	}
 }
 
+
+// Paciente godoc
+// @Summary Complete paciente update by id
+// @Description Update all paciente fields by id
+// @Tags Paciente
+// @Param token header string true "auth token"
+// @Param id path int true "id del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 404 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [put]
 func (h *PacienteHandler) HandlerUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -98,6 +150,19 @@ func (h *PacienteHandler) HandlerUpdate() gin.HandlerFunc {
 	}
 }
 
+
+// Paciente godoc
+// @Summary Delete paciente by id
+// @Description Delete paciente by id
+// @Tags Paciente
+// @Param token header string true "auth token"
+// @Param id path int true "id del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 404 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [delete]
 func (h *PacienteHandler) HandlerDelete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -115,6 +180,20 @@ func (h *PacienteHandler) HandlerDelete() gin.HandlerFunc {
 	}
 }
 
+
+// Paciente godoc
+// @Summary Complete or partial paciente update by id
+// @Description Update all or some paciente fields by id
+// @Tags Paciente
+// @Param token header string true "auth token"
+// @Param id path int true "id del paciente"
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 404 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /pacientes/:id [patch]
 func (h *PacienteHandler) HandlerPatch() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
