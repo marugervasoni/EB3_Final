@@ -61,12 +61,11 @@ func (h *PacienteHandler) HandlerGetAll() gin.HandlerFunc {
 // @Description Get paciente by id
 // @Tags Paciente
 // @Param id path int true "id del paciente"
-// @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /pacientes/:id [get]
+// @Router /pacientes/{id} [get]
 func (h *PacienteHandler) HandlerGetById() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -92,6 +91,7 @@ func (h *PacienteHandler) HandlerGetById() gin.HandlerFunc {
 // @Description Create a new paciente
 // @Tags Paciente
 // @Param token header string true "auth token"
+// @Param payload body domain.Paciente true "Paciente"
 // @Accept json
 // @Produce json
 // @Success 201 {object} web.response
@@ -124,13 +124,14 @@ func (h *PacienteHandler) HandlerCreate() gin.HandlerFunc {
 // @Tags Paciente
 // @Param token header string true "auth token"
 // @Param id path int true "id del paciente"
+// @Param payload body domain.Paciente true "Paciente"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /pacientes/:id [put]
+// @Router /pacientes/{id} [put]
 func (h *PacienteHandler) HandlerUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -167,7 +168,7 @@ func (h *PacienteHandler) HandlerUpdate() gin.HandlerFunc {
 // @Success 200 {object} web.response
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /pacientes/:id [delete]
+// @Router /pacientes/{id} [delete]
 func (h *PacienteHandler) HandlerDelete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -192,13 +193,14 @@ func (h *PacienteHandler) HandlerDelete() gin.HandlerFunc {
 // @Tags Paciente
 // @Param token header string true "auth token"
 // @Param id path int true "id del paciente"
+// @Param payload body domain.Paciente true "Paciente"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /pacientes/:id [patch]
+// @Router /pacientes/{id} [patch]
 func (h *PacienteHandler) HandlerPatch() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))

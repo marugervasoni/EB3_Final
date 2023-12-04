@@ -47,12 +47,11 @@ func (c *Controller) HandlerGetAll() gin.HandlerFunc {
 // @Description Get odontologo by id
 // @Tags Odontologo
 // @Param id path int true "id del odontologo"
-// @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos/:id [get]
+// @Router /odontologos/{id} [get]
 func (c *Controller) HandlerGetById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -76,6 +75,7 @@ func (c *Controller) HandlerGetById() gin.HandlerFunc {
 // @Description Create a new odontologo
 // @Tags Odontologo
 // @Param token header string true "auth token"
+// @Param payload body domain.Odontologo true "Odontologo"
 // @Accept json
 // @Produce json
 // @Success 201 {object} web.response
@@ -109,13 +109,14 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 // @Tags Odontologo
 // @Param token header string true "auth token"
 // @Param id path int true "id del odontologo"
+// @Param payload body domain.Odontologo true "Odontologo"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos/:id [put]
+// @Router /odontologos/{id} [put]
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -148,12 +149,11 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 // @Tags Odontologo
 // @Param token header string true "auth token"
 // @Param id path int true "id del odontologo"
-// @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos/:id [delete]
+// @Router /odontologos/{id} [delete]
 func (c *Controller) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -178,13 +178,14 @@ func (c *Controller) HandlerDelete() gin.HandlerFunc {
 // @Tags Odontologo
 // @Param token header string true "auth token"
 // @Param id path int true "id del odontologo"
+// @Param payload body domain.Odontologo true "Odontologo"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos/:id [patch]
+// @Router /odontologos/{id} [patch]
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))

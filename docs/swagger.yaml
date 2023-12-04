@@ -1,5 +1,44 @@
 basePath: /api/v1
 definitions:
+  domain.Odontologo:
+    properties:
+      apellido:
+        type: string
+      id:
+        type: integer
+      matricula:
+        type: string
+      nombre:
+        type: string
+    type: object
+  domain.Paciente:
+    properties:
+      apellido:
+        type: string
+      dni:
+        type: integer
+      domicilio:
+        type: string
+      fecha_de_alta:
+        type: string
+      id:
+        type: integer
+      nombre:
+        type: string
+    type: object
+  domain.Turno:
+    properties:
+      descripcion:
+        type: string
+      fecha_hora:
+        type: string
+      id:
+        type: integer
+      odontologo_id:
+        type: integer
+      paciente_id:
+        type: integer
+    type: object
   web.errorResponse:
     properties:
       code:
@@ -30,7 +69,25 @@ info:
   title: 'EBE3- FINAL: API CLINICA'
   version: "1.0"
 paths:
-  /odontologo:
+  /odontologos:
+    get:
+      consumes:
+      - application/json
+      description: Get all odontologos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Get all odontologos
+      tags:
+      - Odontologo
     post:
       consumes:
       - application/json
@@ -41,6 +98,12 @@ paths:
         name: token
         required: true
         type: string
+      - description: Odontologo
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Odontologo'
       produces:
       - application/json
       responses:
@@ -63,29 +126,8 @@ paths:
       summary: Create a new odontologo
       tags:
       - Odontologo
-  /odontologos:
-    get:
-      consumes:
-      - application/json
-      description: Get all odontologos
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/web.response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/web.errorResponse'
-      summary: Get all odontologos
-      tags:
-      - Odontologo
-  /odontologos/:id:
+  /odontologos/{id}:
     delete:
-      consumes:
-      - application/json
       description: Delete odontologo by id
       parameters:
       - description: auth token
@@ -117,8 +159,6 @@ paths:
       tags:
       - Odontologo
     get:
-      consumes:
-      - application/json
       description: Get odontologo by id
       parameters:
       - description: id del odontologo
@@ -159,6 +199,12 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Odontologo
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Odontologo'
       produces:
       - application/json
       responses:
@@ -196,6 +242,12 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Odontologo
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Odontologo'
       produces:
       - application/json
       responses:
@@ -218,39 +270,6 @@ paths:
       summary: Complete odontologo update by id
       tags:
       - Odontologo
-  /paciente:
-    post:
-      consumes:
-      - application/json
-      description: Create a new paciente
-      parameters:
-      - description: auth token
-        in: header
-        name: token
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/web.response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/web.errorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/web.errorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/web.errorResponse'
-      summary: Create a new paciente
-      tags:
-      - Paciente
   /pacientes:
     get:
       consumes:
@@ -274,7 +293,45 @@ paths:
       summary: Get all pacientes
       tags:
       - Paciente
-  /pacientes/:id:
+    post:
+      consumes:
+      - application/json
+      description: Create a new paciente
+      parameters:
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Paciente
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Paciente'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Create a new paciente
+      tags:
+      - Paciente
+  /pacientes/{id}:
     delete:
       consumes:
       - application/json
@@ -309,8 +366,6 @@ paths:
       tags:
       - Paciente
     get:
-      consumes:
-      - application/json
       description: Get paciente by id
       parameters:
       - description: id del paciente
@@ -351,6 +406,12 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Paciente
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Paciente'
       produces:
       - application/json
       responses:
@@ -388,6 +449,12 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Paciente
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Paciente'
       produces:
       - application/json
       responses:
@@ -412,8 +479,6 @@ paths:
       - Paciente
   /turnos:
     get:
-      consumes:
-      - application/json
       description: Get turno by DNI
       parameters:
       - description: dni del paciente
@@ -449,6 +514,12 @@ paths:
         name: token
         required: true
         type: string
+      - description: Turno
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Turno'
       produces:
       - application/json
       responses:
@@ -471,10 +542,8 @@ paths:
       summary: Create a new turno
       tags:
       - Turno
-  /turnos/:id:
+  /turnos/{id}:
     delete:
-      consumes:
-      - application/json
       description: Delete turno by id
       parameters:
       - description: id del turno
@@ -506,8 +575,6 @@ paths:
       tags:
       - Turno
     get:
-      consumes:
-      - application/json
       description: Get turno by id
       parameters:
       - description: id del turno
@@ -548,6 +615,12 @@ paths:
         name: token
         required: true
         type: string
+      - description: Turno
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Turno'
       produces:
       - application/json
       responses:
@@ -581,6 +654,12 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Turno
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Turno'
       produces:
       - application/json
       responses:

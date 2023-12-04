@@ -31,6 +31,7 @@ func (h *TurnoHandler) RegisterRoutes(router *gin.RouterGroup) {
 // @Description Create a new turno
 // @Tags Turno
 // @Param token header string true "auth token"
+// @Param payload body domain.Turno true "Turno"
 // @Accept json
 // @Produce json
 // @Success 201 {object} web.response
@@ -62,12 +63,11 @@ func (h *TurnoHandler) HandlerCreate() gin.HandlerFunc {
 // @Description Get turno by id
 // @Tags Turno
 // @Param id path int true "id del turno"
-// @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /turnos/:id [get]
+// @Router /turnos/{id} [get]
 func (h *TurnoHandler) HandlerGetById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -92,13 +92,14 @@ func (h *TurnoHandler) HandlerGetById() gin.HandlerFunc {
 // @Tags Turno
 // @Param token header string true "auth token"
 // @Param id path int true "id del odontologo"
+// @Param payload body domain.Turno true "Turno"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /turnos/:id [put]
+// @Router /turnos/{id} [put]
 func (h *TurnoHandler) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -129,12 +130,13 @@ func (h *TurnoHandler) HandlerUpdate() gin.HandlerFunc {
 // @Tags Turno
 // @Param id path int true "id del turno"
 // @Param token header string true "auth token"
+// @Param payload body domain.Turno true "Turno"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /turnos/:id [patch]
+// @Router /turnos/{id} [patch]
 func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -167,12 +169,11 @@ func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
 // @Tags Turno
 // @Param id path int true "id del turno"
 // @Param token header string true "auth token"
-// @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /turnos/:id [delete]
+// @Router /turnos/{id} [delete]
 func (h *TurnoHandler) HandleDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -198,7 +199,6 @@ func (h *TurnoHandler) HandleDelete() gin.HandlerFunc {
 // @Description Get turno by DNI
 // @Tags Turno
 // @Param dni query int true "dni del paciente"
-// @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
