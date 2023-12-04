@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jum8/EBE3_Final.git/internal/domain"
 	"github.com/jum8/EBE3_Final.git/internal/turno"
@@ -27,38 +26,41 @@ func (h *TurnoHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.PUT("/turno/:id", h.HandlerUpdate())
 }
 
-
 // Producto godoc
-// @Summary Turnos
+// @Summary Create a new turno
 // @Description Create a new turno
-// @Tags turno
+// @Tags Turno
+// @Param token header string true "auth token"
 // @Accept json
 // @Produce json
-// @Success 200 {object} web.response
+// @Success 201 {object} web.response
 // @Failure 400 {object} web.errorResponse
+// @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /turnos [post]
 func (h *TurnoHandler) HandlerCreate() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var turno domain.Turno
-		if err := c.Bind(&turno); err != nil {
-			web.Error(c, http.StatusBadRequest, "Bad request")
+	return func(ctx *gin.Context) {
+		var turnoReq domain.Turno
+		err := ctx.Bind(&turnoReq) 
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
 			return
 		}
 
-		newTurno, err := h.Service.Create(c, turno)
+		turnoCreated, err := h.Service.Create(ctx, turnoReq)
 		if err != nil {
-			web.Error(c, http.StatusInternalServerError, err.Error())
+			web.Error(ctx, http.StatusInternalServerError, "internal server error")
 			return
 		}
-		web.Success(c, http.StatusCreated, gin.H{"data": newTurno})
+
+		web.Success(ctx, http.StatusCreated, turnoCreated)
 	}
 }
 
 // Producto godoc
-// @Summary Turnos
+// @Summary Get turno by id
 // @Description Get turno by id
-// @Tags turno
+// @Tags Turno
 // @Param id path int true "id del turno"
 // @Accept json
 // @Produce json
@@ -67,59 +69,64 @@ func (h *TurnoHandler) HandlerCreate() gin.HandlerFunc {
 // @Failure 500 {object} web.errorResponse
 // @Router /turnos/:id [get]
 func (h *TurnoHandler) HandlerGetById() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(c, http.StatusBadRequest, "Invalid ID")
+			web.Error(ctx, http.StatusBadRequest, "%s", "ID inválido")
 			return
 		}
 
-		turno, err := h.Service.GetById(c, id)
+		turnoById, err := h.Service.GetById(ctx, id)
 		if err != nil {
-			web.Error(c, http.StatusNotFound, err.Error())
+			web.Error(ctx, http.StatusNotFound, "%s", "turno no encontrado")
 			return
 		}
-		web.Success(c, http.StatusOK, gin.H{"data": turno})
+
+		web.Success(ctx, http.StatusOK, turnoById)
 	}
 }
 
 // Producto godoc
-// @Summary Turnos
-// @Description Update turno by id
-// @Tags turno
+// @Summary Complete turno update by id
+// @Description Update all turno fields by id
+// @Tags Turno
+// @Param token header string true "auth token"
+// @Param id path int true "id del odontologo"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
+// @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /turnos/:id [put]
 func (h *TurnoHandler) HandlerUpdate() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(c, http.StatusBadRequest, "Invalid ID")
+			web.Error(ctx, http.StatusBadRequest, "%s", "ID inválidoD")
 			return
 		}
 
-		var turno domain.Turno
-		if err := c.Bind(&turno); err != nil {
-			web.Error(c, http.StatusBadRequest, "Bad request binding")
+		var turnoReq domain.Turno
+		err = ctx.Bind(&turnoReq); 
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
 			return
 		}
 
-		updatedTurno, err := h.Service.Update(c, id, turno)
+		turnoUpdated, err := h.Service.Update(ctx, id, turnoReq)
 		if err != nil {
-			web.Error(c, http.StatusInternalServerError, err.Error())
+			web.Error(ctx, http.StatusInternalServerError,"%s", "internal server error")
 			return
 		}
-		web.Success(c, http.StatusOK, gin.H{"data": updatedTurno})
+		web.Success(ctx, http.StatusOK, turnoUpdated)
 	}
 }
 
 // Turno godoc
-// @Summary Patch turno
-// @Description Actualiza un turno enviando solo los campos a actualizar
-// @Tags turno
+// @Summary Complete or partial turno update by id
+// @Description Update all or some turno fields by id
+// @Tags Turno
 // @Param id path int true "id del turno"
 // @Param token header string true "auth token"
 // @Accept json
@@ -140,7 +147,7 @@ func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
 
 		err = ctx.ShouldBindJSON(&tunoReq)
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, "%s", "bad request binding")
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
 			return
 		}
 
@@ -156,8 +163,8 @@ func (h *TurnoHandler) HandlerPatch() gin.HandlerFunc {
 
 // Turno godoc
 // @Summary Delete turno by id
-// @Description Borra el turno con el id enviado por parametro
-// @Tags turno
+// @Description Delete turno by id
+// @Tags Turno
 // @Param id path int true "id del turno"
 // @Param token header string true "auth token"
 // @Accept json
@@ -187,9 +194,9 @@ func (h *TurnoHandler) HandleDelete() gin.HandlerFunc {
 }
 
 // Turno godoc
-// @Summary Obtener turnos por dni
-// @Description Obtiene todos los turnos de un paciente identificado por su dni
-// @Tags turno
+// @Summary Get turno by DNI
+// @Description Get turno by DNI
+// @Tags Turno
 // @Param dni query int true "dni del paciente"
 // @Accept json
 // @Produce json

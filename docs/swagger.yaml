@@ -62,7 +62,7 @@ paths:
             $ref: '#/definitions/web.errorResponse'
       summary: Create a new odontologo
       tags:
-      - odontologo
+      - Odontologo
   /odontologos:
     get:
       consumes:
@@ -81,7 +81,7 @@ paths:
             $ref: '#/definitions/web.errorResponse'
       summary: Get all odontologos
       tags:
-      - odontologo
+      - Odontologo
   /odontologos/:id:
     delete:
       consumes:
@@ -115,7 +115,7 @@ paths:
             $ref: '#/definitions/web.errorResponse'
       summary: Delete odontologo by id
       tags:
-      - odontologo
+      - Odontologo
     get:
       consumes:
       - application/json
@@ -143,7 +143,7 @@ paths:
             $ref: '#/definitions/web.errorResponse'
       summary: Get odontologo by id
       tags:
-      - odontologo
+      - Odontologo
     patch:
       consumes:
       - application/json
@@ -180,7 +180,7 @@ paths:
             $ref: '#/definitions/web.errorResponse'
       summary: Complete or partial odontologo update by id
       tags:
-      - odontologo
+      - Odontologo
     put:
       consumes:
       - application/json
@@ -217,7 +217,7 @@ paths:
             $ref: '#/definitions/web.errorResponse'
       summary: Complete odontologo update by id
       tags:
-      - odontologo
+      - Odontologo
   /paciente:
     post:
       consumes:
@@ -255,7 +255,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get all pacientes
+      description: Get all pacientes
       produces:
       - application/json
       responses:
@@ -271,7 +271,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/web.errorResponse'
-      summary: Paciente
+      summary: Get all pacientes
       tags:
       - Paciente
   /pacientes/:id:
@@ -414,7 +414,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Obtiene todos los turnos de un paciente identificado por su dni
+      description: Get turno by DNI
       parameters:
       - description: dni del paciente
         in: query
@@ -436,36 +436,46 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/web.errorResponse'
-      summary: Obtener turnos por dni
+      summary: Get turno by DNI
       tags:
-      - turno
+      - Turno
     post:
       consumes:
       - application/json
       description: Create a new turno
+      parameters:
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/web.response'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/web.errorResponse'
-      summary: Turnos
+      summary: Create a new turno
       tags:
-      - turno
+      - Turno
   /turnos/:id:
     delete:
       consumes:
       - application/json
-      description: Borra el turno con el id enviado por parametro
+      description: Delete turno by id
       parameters:
       - description: id del turno
         in: path
@@ -494,7 +504,7 @@ paths:
             $ref: '#/definitions/web.errorResponse'
       summary: Delete turno by id
       tags:
-      - turno
+      - Turno
     get:
       consumes:
       - application/json
@@ -520,13 +530,13 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/web.errorResponse'
-      summary: Turnos
+      summary: Get turno by id
       tags:
-      - turno
+      - Turno
     patch:
       consumes:
       - application/json
-      description: Actualiza un turno enviando solo los campos a actualizar
+      description: Update all or some turno fields by id
       parameters:
       - description: id del turno
         in: path
@@ -553,13 +563,24 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/web.errorResponse'
-      summary: Patch turno
+      summary: Complete or partial turno update by id
       tags:
-      - turno
+      - Turno
     put:
       consumes:
       - application/json
-      description: Update turno by id
+      description: Update all turno fields by id
+      parameters:
+      - description: auth token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: id del odontologo
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -571,11 +592,15 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/web.errorResponse'
-      summary: Turnos
+      summary: Complete turno update by id
       tags:
-      - turno
+      - Turno
 swagger: "2.0"

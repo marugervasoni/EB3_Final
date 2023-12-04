@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jum8/EBE3_Final.git/internal/domain"
 	"github.com/jum8/EBE3_Final.git/internal/odontologo"
@@ -25,7 +24,7 @@ func NewControllerOdontologo(service odontologo.Repository) *Controller {
 // Odontologo godoc
 // @Summary Get all odontologos
 // @Description Get all odontologos
-// @Tags odontologo
+// @Tags Odontologo
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -46,7 +45,7 @@ func (c *Controller) HandlerGetAll() gin.HandlerFunc {
 // Odontologo godoc
 // @Summary Get odontologo by id
 // @Description Get odontologo by id
-// @Tags odontologo
+// @Tags Odontologo
 // @Param id path int true "id del odontologo"
 // @Accept json
 // @Produce json
@@ -75,7 +74,7 @@ func (c *Controller) HandlerGetById() gin.HandlerFunc {
 // Odontologo godoc
 // @Summary Create a new odontologo
 // @Description Create a new odontologo
-// @Tags odontologo
+// @Tags Odontologo
 // @Param token header string true "auth token"
 // @Accept json
 // @Produce json
@@ -107,7 +106,7 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 // Odontologo godoc
 // @Summary Complete odontologo update by id
 // @Description Update all odontologo fields by id
-// @Tags odontologo
+// @Tags Odontologo
 // @Param token header string true "auth token"
 // @Param id path int true "id del odontologo"
 // @Accept json
@@ -146,7 +145,7 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 // Odontologo godoc
 // @Summary Delete odontologo by id
 // @Description Delete odontologo by id
-// @Tags odontologo
+// @Tags Odontologo
 // @Param token header string true "auth token"
 // @Param id path int true "id del odontologo"
 // @Accept json
@@ -176,7 +175,7 @@ func (c *Controller) HandlerDelete() gin.HandlerFunc {
 // Odontologo godoc
 // @Summary Complete or partial odontologo update by id
 // @Description Update all or some odontologo fields by id
-// @Tags odontologo
+// @Tags Odontologo
 // @Param token header string true "auth token"
 // @Param id path int true "id del odontologo"
 // @Accept json

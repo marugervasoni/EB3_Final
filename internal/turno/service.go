@@ -5,7 +5,6 @@ import (
 	"errors"
 	"log"
 	"time"
-
 	"github.com/jum8/EBE3_Final.git/internal/domain"
 	Odontologo "github.com/jum8/EBE3_Final.git/internal/odontologo"
 	Paciente "github.com/jum8/EBE3_Final.git/internal/paciente"
@@ -39,6 +38,7 @@ func NewServiceTurno(repository Repository, odontologoRepo OdontologoRepository,
 func (s *service) Create(ctx context.Context, turno domain.Turno) (*domain.Turno, error) {
 	err := s.validateTurnoAttributes(turno)
 	if err != nil {
+		log.Println("[TurnoService][Post] error validating turno attributes", err)
 		return nil, err
 	}
 
@@ -48,16 +48,19 @@ func (s *service) Create(ctx context.Context, turno domain.Turno) (*domain.Turno
 
 	err = s.validateOdontologo(ctx, turno.OdontologoId)
 	if err != nil {
+		log.Println("[TurnoService][Post] error validating odontologo of turno", err)
 		return nil, err
 	}
 
 	err = s.validatePaciente(ctx, turno.PacienteId)
 	if err != nil {
+		log.Println("[TurnoService][Post] error validating paciente of turno", err)
 		return nil, err
 	}
 
 	turnoCreated, err := s.repository.Create(ctx, turno)
 	if err != nil {
+		log.Println("[TurnoService][Post] error creating turno", err)
 		return nil, err
 	}
 
@@ -68,6 +71,7 @@ func (s *service) Create(ctx context.Context, turno domain.Turno) (*domain.Turno
 func (s *service) GetById(ctx context.Context, id int) (*domain.Turno, error) {
 	turno, err := s.repository.GetById(ctx, id)
 	if err != nil {
+		log.Println("[TurnoService][GetById] error updating turno by ID", err)
 		return nil, err
 	}
 
@@ -78,6 +82,7 @@ func (s *service) GetById(ctx context.Context, id int) (*domain.Turno, error) {
 func (s *service) Update(ctx context.Context, id int, turno domain.Turno) (*domain.Turno, error) {
 	_, err := s.repository.GetById(ctx, id)
 	if err != nil {
+		log.Println("[TurnoService][Put] error getting turno by ID", err)
 		return nil, err
 	}
 
@@ -85,6 +90,7 @@ func (s *service) Update(ctx context.Context, id int, turno domain.Turno) (*doma
 
 	err = s.validateTurnoAttributes(turno)
 	if err != nil {
+		log.Println("[TurnoService][Put] error validating turno attributes", err)
 		return nil, err
 	}
 
@@ -94,16 +100,19 @@ func (s *service) Update(ctx context.Context, id int, turno domain.Turno) (*doma
 
 	err = s.validateOdontologo(ctx, turno.OdontologoId)
 	if err != nil {
+		log.Println("[TurnoService][Put] error validating odontologo of turno", err)
 		return nil, err
 	}
 
 	err = s.validatePaciente(ctx, turno.PacienteId)
 	if err != nil {
+		log.Println("[TurnoService][Put] error validating paciente of turno", err)
 		return nil, err
 	}
 
 	turnoUpdated, err := s.repository.Update(ctx, id, turno)
 	if err != nil {
+		log.Println("[TurnoService][Put] error updating turno by ID", err)
 		return nil, err
 	}
 

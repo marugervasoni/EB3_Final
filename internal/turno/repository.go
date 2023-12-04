@@ -10,7 +10,7 @@ import (
 
 var (
 	ErrNotFound         = errors.New("not found")
-	ErrPrepareStatement = errors.New("error prepare statement turno")
+	ErrPrepareStatement = errors.New("error prepare statement")
 	ErrExecStatement    = errors.New("error exec statement")
 	ErrLastInsertedId   = errors.New("error last inserted id")
 )
@@ -22,7 +22,6 @@ type repository struct {
 func NewRepositoryTurno(db *sql.DB) Repository {
 	return &repository{db: db}
 }
-
 
 //Post
 func (r *repository) Create(ctx context.Context, turno domain.Turno) (*domain.Turno, error) {
@@ -50,7 +49,6 @@ func (r *repository) Create(ctx context.Context, turno domain.Turno) (*domain.Tu
 	return &turno, nil
 }
 
-
 //GetById
 func (r *repository) GetById(ctx context.Context, id int) (*domain.Turno, error) {
 	row := r.db.QueryRow(QueryGetTurnoById, id)
@@ -73,7 +71,6 @@ func (r *repository) GetById(ctx context.Context, id int) (*domain.Turno, error)
 
 	return &turno, nil
 }
-
 
 //Put
 func (r *repository) Update(ctx context.Context, id int, turno domain.Turno) (*domain.Turno, error) {
@@ -99,7 +96,6 @@ func (r *repository) Update(ctx context.Context, id int, turno domain.Turno) (*d
 }
 
 //Patch
-
 func (r *repository) Patch(ctx context.Context,	turno domain.Turno,	id int) (*domain.Turno, error) {
 	statement, err := r.db.Prepare(QueryUpdateTurno)
 	if err != nil {
@@ -141,6 +137,7 @@ func (r *repository) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
+//GetByDNI
 func (r *repository) GetByDNI(ctx context.Context, dni int) ([]domain.TurnoFull, error) {
 	rows, err := r.db.Query(QueryGetTurnosByPacienteDNI, dni)
 	if err != nil {

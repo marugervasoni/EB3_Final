@@ -34,7 +34,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "odontologo"
+                    "Odontologo"
                 ],
                 "summary": "Create a new odontologo",
                 "parameters": [
@@ -84,7 +84,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "odontologo"
+                    "Odontologo"
                 ],
                 "summary": "Get all odontologos",
                 "responses": {
@@ -113,7 +113,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "odontologo"
+                    "Odontologo"
                 ],
                 "summary": "Get odontologo by id",
                 "parameters": [
@@ -155,7 +155,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "odontologo"
+                    "Odontologo"
                 ],
                 "summary": "Complete odontologo update by id",
                 "parameters": [
@@ -210,7 +210,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "odontologo"
+                    "Odontologo"
                 ],
                 "summary": "Delete odontologo by id",
                 "parameters": [
@@ -259,7 +259,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "odontologo"
+                    "Odontologo"
                 ],
                 "summary": "Complete or partial odontologo update by id",
                 "parameters": [
@@ -358,7 +358,7 @@ const docTemplate = `{
         },
         "/pacientes": {
             "get": {
-                "description": "get all pacientes",
+                "description": "Get all pacientes",
                 "consumes": [
                     "application/json"
                 ],
@@ -368,7 +368,7 @@ const docTemplate = `{
                 "tags": [
                     "Paciente"
                 ],
-                "summary": "Paciente",
+                "summary": "Get all pacientes",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -596,7 +596,7 @@ const docTemplate = `{
         },
         "/turnos": {
             "get": {
-                "description": "Obtiene todos los turnos de un paciente identificado por su dni",
+                "description": "Get turno by DNI",
                 "consumes": [
                     "application/json"
                 ],
@@ -604,9 +604,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "turno"
+                    "Turno"
                 ],
-                "summary": "Obtener turnos por dni",
+                "summary": "Get turno by DNI",
                 "parameters": [
                     {
                         "type": "integer",
@@ -646,18 +646,33 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "turno"
+                    "Turno"
                 ],
-                "summary": "Turnos",
+                "summary": "Create a new turno",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "auth token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/web.response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/web.errorResponse"
                         }
@@ -681,9 +696,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "turno"
+                    "Turno"
                 ],
-                "summary": "Turnos",
+                "summary": "Get turno by id",
                 "parameters": [
                     {
                         "type": "integer",
@@ -715,7 +730,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update turno by id",
+                "description": "Update all turno fields by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -723,9 +738,25 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "turno"
+                    "Turno"
                 ],
-                "summary": "Turnos",
+                "summary": "Complete turno update by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "auth token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id del odontologo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -739,6 +770,12 @@ const docTemplate = `{
                             "$ref": "#/definitions/web.errorResponse"
                         }
                     },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -748,7 +785,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Borra el turno con el id enviado por parametro",
+                "description": "Delete turno by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -756,7 +793,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "turno"
+                    "Turno"
                 ],
                 "summary": "Delete turno by id",
                 "parameters": [
@@ -797,7 +834,7 @@ const docTemplate = `{
                 }
             },
             "patch": {
-                "description": "Actualiza un turno enviando solo los campos a actualizar",
+                "description": "Update all or some turno fields by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -805,9 +842,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "turno"
+                    "Turno"
                 ],
-                "summary": "Patch turno",
+                "summary": "Complete or partial turno update by id",
                 "parameters": [
                     {
                         "type": "integer",

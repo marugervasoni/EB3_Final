@@ -3,7 +3,6 @@ package paciente
 import (
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jum8/EBE3_Final.git/internal/domain"
 	"github.com/jum8/EBE3_Final.git/internal/paciente"
@@ -31,11 +30,9 @@ func (h *PacienteHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.PATCH("/paciente/:id", h.HandlerPatch())
 }
 
-
-
 // Paciente godoc
-// @Summary Paciente
-// @Description get all pacientes
+// @Summary Get all pacientes
+// @Description Get all pacientes
 // @Tags Paciente
 // @Accept json
 // @Produce json
