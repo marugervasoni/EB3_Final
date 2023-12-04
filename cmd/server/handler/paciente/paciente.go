@@ -1,6 +1,7 @@
 package paciente
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 	"github.com/gin-gonic/gin"
@@ -44,12 +45,15 @@ func (h *PacienteHandler) HandlerGetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		pacientes, err := h.Service.GetAll(c)
 		if err != nil {
-			web.Error(c, http.StatusInternalServerError, err.Error())
+			errorHandler(c, err)
 			return
 		}
-		web.Success(c, http.StatusOK, gin.H{"data": pacientes})
+
+		web.Success(c, http.StatusOK, pacientes)
 	}
 }
+
+
 
 
 // Paciente godoc
@@ -67,18 +71,20 @@ func (h *PacienteHandler) HandlerGetById() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			web.Error(c, http.StatusBadRequest, "Invalid ID")
+			web.Error(c, http.StatusBadRequest, "ID inválido: %s", err.Error())
 			return
 		}
 
 		paciente, err := h.Service.GetById(c, id)
 		if err != nil {
-			web.Error(c, http.StatusNotFound, err.Error())
+			web.Error(c, http.StatusNotFound, "Paciente no encontrado: %s", err.Error())
 			return
 		}
-		web.Success(c, http.StatusOK, gin.H{"data": paciente})
+
+		web.Success(c, http.StatusOK, paciente) 
 	}
 }
+
 
 
 // Paciente godoc
@@ -97,7 +103,7 @@ func (h *PacienteHandler) HandlerCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var paciente domain.Paciente
 		if err := c.Bind(&paciente); err != nil {
-			web.Error(c, http.StatusBadRequest, "Bad request")
+			web.Error(c, http.StatusBadRequest, "Solicitud incorrecta: %s", err.Error())
 			return
 		}
 
@@ -106,9 +112,10 @@ func (h *PacienteHandler) HandlerCreate() gin.HandlerFunc {
 			web.Error(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		web.Success(c, http.StatusCreated, gin.H{"data": newPaciente})
+		web.Success(c, http.StatusCreated, newPaciente)
 	}
 }
+
 
 
 // Paciente godoc
@@ -128,13 +135,13 @@ func (h *PacienteHandler) HandlerUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			web.Error(c, http.StatusBadRequest, "Invalid ID")
+			web.Error(c, http.StatusBadRequest, "ID inválido: %s", err.Error())
 			return
 		}
 
 		var paciente domain.Paciente
 		if err := c.Bind(&paciente); err != nil {
-			web.Error(c, http.StatusBadRequest, "Bad request binding")
+			web.Error(c, http.StatusBadRequest, "Error en el enlace de datos: %s", err.Error())
 			return
 		}
 
@@ -143,7 +150,8 @@ func (h *PacienteHandler) HandlerUpdate() gin.HandlerFunc {
 			web.Error(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		web.Success(c, http.StatusOK, gin.H{"data": updatedPaciente})
+		
+		web.Success(c, http.StatusOK, updatedPaciente)
 	}
 }
 
@@ -164,7 +172,7 @@ func (h *PacienteHandler) HandlerDelete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			web.Error(c, http.StatusBadRequest, "Invalid ID")
+			web.Error(c, http.StatusBadRequest, "ID inválido: %s", err.Error())
 			return
 		}
 
@@ -173,7 +181,7 @@ func (h *PacienteHandler) HandlerDelete() gin.HandlerFunc {
 			web.Error(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		web.Success(c, http.StatusOK, gin.H{"message": "Patient deleted successfully"})
+		web.Success(c, http.StatusOK, "Paciente eliminado con éxito")
 	}
 }
 
@@ -195,13 +203,13 @@ func (h *PacienteHandler) HandlerPatch() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			web.Error(c, http.StatusBadRequest, "Invalid ID")
+			web.Error(c, http.StatusBadRequest, "ID inválido: %s", err.Error())
 			return
 		}
 
 		var paciente domain.Paciente
 		if err := c.Bind(&paciente); err != nil {
-			web.Error(c, http.StatusBadRequest, "Bad request binding")
+			web.Error(c, http.StatusBadRequest, "Error en el enlace de datos: %s", err.Error())
 			return
 		}
 
@@ -210,6 +218,19 @@ func (h *PacienteHandler) HandlerPatch() gin.HandlerFunc {
 			web.Error(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		web.Success(c, http.StatusOK, gin.H{"data": patchedPaciente})
+		web.Success(c, http.StatusOK, patchedPaciente)
+	}
+}
+
+
+func errorHandler(ctx *gin.Context, err error) {
+	if errors.Is(err, paciente.ErrInvalidAttributes) {
+		web.Error(ctx, http.StatusBadRequest, "%s", "atributos de paciente incorrectos")
+	} else if errors.Is(err, paciente.ErrDuplicateDNI) {
+		web.Error(ctx, http.StatusBadRequest, "%s", "ya existe un paciente con el dni ingresado")
+	} else if errors.Is(err, paciente.ErrNotFound) {
+		web.Error(ctx, http.StatusNotFound, "%s", "paciente no encontrado")
+	} else {
+		web.InternalServerError(ctx)
 	}
 }

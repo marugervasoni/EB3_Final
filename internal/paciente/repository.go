@@ -7,6 +7,7 @@ import (
 	"github.com/jum8/EBE3_Final.git/internal/domain"
 	"strings"
 	"log"
+	"fmt"
 )
 
 var (
@@ -82,19 +83,28 @@ func (r *repository) Create(ctx context.Context, paciente domain.Paciente) (*dom
 }
 
 func (r *repository) Update(ctx context.Context, id int, paciente domain.Paciente) (*domain.Paciente, error) {
-	statement, err := r.db.PrepareContext(ctx, QueryUpdatePaciente)
-	if err != nil {
-		return nil, ErrPrepareStatement
-	}
-	defer statement.Close()
+    statement, err := r.db.PrepareContext(ctx, QueryUpdatePaciente)
+    if err != nil {
+        return nil, fmt.Errorf("error al preparar la declaración SQL: %w", err)
+    }
+    defer statement.Close()
 
-	_, err = statement.ExecContext(ctx, paciente.Nombre, paciente.Apellido, paciente.Domicilio, paciente.DNI, paciente.FechaDeAlta, id)
-	if err != nil {
-		return nil, ErrExecStatement
-	}
+    result, err := statement.ExecContext(ctx, paciente.Nombre, paciente.Apellido, paciente.Domicilio, paciente.DNI, paciente.FechaDeAlta, id)
+    if err != nil {
+        return nil, fmt.Errorf("error al ejecutar la declaración SQL: %w", err)
+    }
 
-	return &paciente, nil
+    rowsAffected, err := result.RowsAffected()
+    if err != nil {
+        return nil, fmt.Errorf("error al verificar las filas afectadas: %w", err)
+    }
+    if rowsAffected == 0 {
+        return nil, fmt.Errorf("ninguna fila afectada, es posible que el ID no exista")
+    }
+
+    return &paciente, nil
 }
+
 
 func (r *repository) Delete(ctx context.Context, id int) error {
 	_, err := r.db.ExecContext(ctx, QueryDeletePaciente, id)
@@ -134,7 +144,8 @@ func buildPatchQuery(id int, paciente domain.Paciente) (string, []interface{}) {
 		parts = append(parts, "domicilio = ?")
 		args = append(args, paciente.Domicilio)
 	}
-	if paciente.DNI != "" {
+
+	if paciente.DNI != 0 {
 		parts = append(parts, "dni = ?")
 		args = append(args, paciente.DNI)
 	}
@@ -148,6 +159,7 @@ func buildPatchQuery(id int, paciente domain.Paciente) (string, []interface{}) {
 
 	return query, args
 }
+
 
 
 
