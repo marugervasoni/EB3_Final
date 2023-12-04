@@ -94,12 +94,9 @@ func (r *repository) Update(ctx context.Context, id int, paciente domain.Pacient
         return nil, fmt.Errorf("error al ejecutar la declaración SQL: %w", err)
     }
 
-    rowsAffected, err := result.RowsAffected()
+    _, err = result.RowsAffected()
     if err != nil {
         return nil, fmt.Errorf("error al verificar las filas afectadas: %w", err)
-    }
-    if rowsAffected == 0 {
-        return nil, fmt.Errorf("ninguna fila afectada, es posible que el ID no exista")
     }
 
     return &paciente, nil
