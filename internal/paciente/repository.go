@@ -125,8 +125,9 @@ func (r *repository) Patch(ctx context.Context, id int, paciente domain.Paciente
 		return nil, err
 	}
 
-	return &paciente, nil
+	return r.GetById(ctx, id)
 }
+
 
 func buildPatchQuery(id int, paciente domain.Paciente) (string, []interface{}) {
 	var parts []string

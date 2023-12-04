@@ -98,7 +98,7 @@ func (h *PacienteHandler) HandlerGetById() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /paciente [post]
+// @Router /pacientes [post]
 func (h *PacienteHandler) HandlerCreate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var paciente domain.Paciente

@@ -82,7 +82,7 @@ func (c *Controller) HandlerGetById() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologo [post]
+// @Router /odontologos [post]
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var odontologoReq domain.Odontologo
