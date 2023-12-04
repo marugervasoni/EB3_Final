@@ -12,7 +12,7 @@ type Repository interface {
 	Update(ctx context.Context, id int, paciente domain.Paciente) (*domain.Paciente, error)
 	Delete(ctx context.Context, id int) error
 	Patch(ctx context.Context, id int, paciente domain.Paciente) (*domain.Paciente, error)
-	GetByDNI(ctx context.Context, dni string) (*domain.Paciente, error) 
+    GetByDNI(ctx context.Context, dni int) (*domain.Paciente, error)
 }
 
 

@@ -6,6 +6,7 @@ import (
 	"github.com/jum8/EBE3_Final.git/internal/domain"
 	"database/sql"
 	"time"
+	"log"
 )
 
 var (
@@ -46,20 +47,29 @@ func (s *service) Create(ctx context.Context, paciente domain.Paciente) (*domain
 }
 
 func (s *service) Update(ctx context.Context, id int, paciente domain.Paciente) (*domain.Paciente, error) {
-	if err := s.validatePacienteAttributes(paciente); err != nil {
-		return nil, err
-	}
+    existingPaciente, err := s.repository.GetById(ctx, id)
+    if err != nil {
+        if errors.Is(err, sql.ErrNoRows) {
+			log.Println(err)
+            return nil, ErrNotFound
+        }
+        return nil, err
+    }
 
-	if err := s.checkDuplicateDNIOnUpdate(ctx, id, paciente.DNI); err != nil {
-		return nil, err
-	}
+    paciente.Id = existingPaciente.Id
+
+    if err := s.validatePacienteAttributes(paciente); err != nil {
+        return nil, err
+    }
+
 
 	if paciente.FechaDeAlta.IsZero() {
         paciente.FechaDeAlta = time.Now()
     }
 
-	return s.repository.Update(ctx, id, paciente)
+    return s.repository.Update(ctx, id, paciente)
 }
+
 
 func (s *service) Delete(ctx context.Context, id int) error {
 	return s.repository.Delete(ctx, id)
@@ -70,13 +80,14 @@ func (s *service) Patch(ctx context.Context, id int, paciente domain.Paciente) (
 }
 
 func (s *service) validatePacienteAttributes(paciente domain.Paciente) error {
-	if paciente.Nombre == "" || paciente.Apellido == "" || paciente.DNI == "" {
-		return ErrInvalidAttributes
-	}
-	return nil
+    if paciente.Nombre == "" || paciente.Apellido == "" || paciente.DNI == 0 {
+        return ErrInvalidAttributes
+    }
+    return nil
 }
 
-func (s *service) checkDuplicateDNI(ctx context.Context, dni string) error {
+
+func (s *service) checkDuplicateDNI(ctx context.Context, dni int) error {
 	paciente, err := s.repository.GetByDNI(ctx, dni)
 	if err != nil && !errors.Is(err, ErrNotFound) {
 		return err
@@ -87,7 +98,7 @@ func (s *service) checkDuplicateDNI(ctx context.Context, dni string) error {
 	return nil
 }
 
-func (s *service) checkDuplicateDNIOnUpdate(ctx context.Context, id int, dni string) error {
+func (s *service) checkDuplicateDNIOnUpdate(ctx context.Context, id int, dni int) error {
 	paciente, err := s.repository.GetByDNI(ctx, dni)
 	if err != nil && !errors.Is(err, ErrNotFound) {
 		return err
@@ -98,7 +109,7 @@ func (s *service) checkDuplicateDNIOnUpdate(ctx context.Context, id int, dni str
 	return nil
 }
 
-func (r *repository) GetByDNI(ctx context.Context, dni string) (*domain.Paciente, error) {
+func (r *repository) GetByDNI(ctx context.Context, dni int) (*domain.Paciente, error) {
     const query = `SELECT id, nombre, apellido, domicilio, dni, fecha_alta FROM paciente WHERE dni = ?`
     row := r.db.QueryRowContext(ctx, query, dni)
     var paciente domain.Paciente
