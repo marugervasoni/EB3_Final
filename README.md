@@ -1,9 +1,11 @@
 # EB3_Final
-Proyecto evaluativo, llevado a cabo en la materia Especialización en Backend 3, desarrollado en Golang
+Proyecto evaluativo, llevado a cabo de forma grupal en la materia Especialización en Backend 3 y desarrollado en Golang.
 
 ## Table of Contents
 1. [Consigna](#consigna)
 2. [Technologies](#technologies)
+
+
 
 ### 1. Consigna: Taller de código: Desafío final
 
@@ -47,13 +49,13 @@ estar implementada mediante un middleware.
 ##### Requerimientos técnicos
 
 La aplicación debe ser desarrollada en diseño orientado a paquetes:
-● Capa/dominio de entidades de negocio.
-● Capa/dominio de acceso a datos (Repository).
-● Capa de acceso a datos (base de datos): es la base de datos de nuestro sistema.
+- Capa/dominio de entidades de negocio.
+- Capa/dominio de acceso a datos (Repository).
+- Capa de acceso a datos (base de datos): es la base de datos de nuestro sistema.
 
 Podrás utilizar cualquier base de datos relacional modelado a través de un modelo entidad-relación, como H2 o MySQL, o no relacional, como MongoDB.
-● Capa/dominio service.
-● Capa/dominio handler.
+- Capa/dominio service.
+- Capa/dominio handler.
 
 
 ### 2. Technologies:
